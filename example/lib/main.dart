@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:lamp_bottom_navigation/lamp_bottom_navigation.dart';
 
 void main() => runApp(MyApp());
@@ -107,7 +106,7 @@ class _HomePageState extends State<HomePage> {
           Icons.search,
           Icons.help_outline,
           Icons.more_horiz,
-        ],
+        ].map((e) => Icon(e)).toList(),
         width: double.infinity,
         onTap: _navigationTapped,
         currentIndex: _page,

@@ -3,14 +3,13 @@ library lamp_bottom_navigation;
 import 'package:flutter/material.dart';
 
 class LampBottomNavigationBar extends StatefulWidget {
-  final double iconSize, width;
-  final List<IconData> items;
+  final double width;
+  final List<Widget> items;
   final int currentIndex;
   final ValueChanged<int> onTap;
 
   LampBottomNavigationBar({
-    this.iconSize = 24,
-    this.items = const <IconData>[],
+    this.items = const <Widget>[],
     this.width,
     this.onTap,
     this.currentIndex = 0,
@@ -23,7 +22,6 @@ class LampBottomNavigationBar extends StatefulWidget {
 
 class _LampBottomNavigationBarState extends State<LampBottomNavigationBar>
     with SingleTickerProviderStateMixin {
-
   int oldIndex = 0;
   AnimationController _controller;
   double width;
@@ -113,7 +111,7 @@ class _LampBottomNavigationBarState extends State<LampBottomNavigationBar>
 }
 
 class LampNavigationBarTile extends StatelessWidget {
-  final IconData icon;
+  final Widget icon;
   final bool active, wasActive;
   final double iconSize;
   final Animation animation;
@@ -137,11 +135,7 @@ class LampNavigationBarTile extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Center(
-            child: Icon(
-              icon,
-              size: iconSize,
-              color: active ? Colors.white : Colors.grey,
-            ),
+            child: icon,
           ),
           FadeTransition(
             opacity: ((active)
@@ -156,8 +150,7 @@ class LampNavigationBarTile extends StatelessWidget {
                         curve: Interval(0, 0.4, curve: Curves.easeInOut)),
                   )),
             child: CustomPaint(
-              foregroundPainter:
-              _LightLampPainter(active: active || wasActive),
+              foregroundPainter: _LightLampPainter(active: active || wasActive),
             ),
           )
         ],
