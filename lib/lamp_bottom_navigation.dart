@@ -1,5 +1,6 @@
 library lamp_bottom_navigation;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LampBottomNavigationBar extends StatefulWidget {
@@ -74,22 +75,24 @@ class _LampBottomNavigationBarState extends State<LampBottomNavigationBar>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 56,
-      width: width,
-      decoration: BoxDecoration(
-        color: widget.backgroundColor,
-      ),
-      child: Stack(
-        children: <Widget>[
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (_, w) {
-              return Container(
-                height: 56,
-                width: width,
-                child: CustomPaint(
-                  foregroundPainter: _SelectedTilePainter(
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Container(
+        height: 56,
+        width: width,
+        decoration: BoxDecoration(
+          color: widget.backgroundColor,
+        ),
+        child: Stack(
+          children: <Widget>[
+            AnimatedBuilder(
+              animation: _controller,
+              builder: (_, w) {
+                return Container(
+                  height: 56,
+                  width: width,
+                  child: CustomPaint(
+                    foregroundPainter: _SelectedTilePainter(
                       newPosition: widget.currentIndex,
                       oldPosition: oldIndex,
                       color: widget.dashColor,
@@ -99,16 +102,18 @@ class _LampBottomNavigationBarState extends State<LampBottomNavigationBar>
                               curve:
                                   Interval(0.0, 0.5, curve: Curves.easeInOut)))
                           .value,
-                      count: widget.items.length),
-                ),
-              );
-            },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[..._buildNavigationTile()],
-          )
-        ],
+                      count: widget.items.length,
+                    ),
+                  ),
+                );
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[..._buildNavigationTile()],
+            )
+          ],
+        ),
       ),
     );
   }
