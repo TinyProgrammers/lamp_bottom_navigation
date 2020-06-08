@@ -7,13 +7,21 @@ class LampBottomNavigationBar extends StatefulWidget {
   final List<Widget> items;
   final int currentIndex;
   final ValueChanged<int> onTap;
+  final Color backgroundColor;
+  final Color dashColor;
+  final Color lightColor;
 
   LampBottomNavigationBar({
     this.items = const <Widget>[],
     this.width,
     this.onTap,
     this.currentIndex = 0,
-  });
+    Color backgroundColor,
+    Color dashColor,
+    Color lightColor,
+  })  : this.backgroundColor = backgroundColor ?? Colors.grey[800],
+        this.dashColor = dashColor ?? Colors.white,
+        this.lightColor = lightColor ?? Colors.white;
 
   @override
   _LampBottomNavigationBarState createState() =>
@@ -56,6 +64,7 @@ class _LampBottomNavigationBarState extends State<LampBottomNavigationBar>
             active: i == widget.currentIndex,
             wasActive: i == oldIndex,
             animation: _controller,
+            lightColor: widget.lightColor,
           ),
         ),
       );
@@ -69,7 +78,7 @@ class _LampBottomNavigationBarState extends State<LampBottomNavigationBar>
       height: 56,
       width: width,
       decoration: BoxDecoration(
-        color: Colors.grey[800],
+        color: widget.backgroundColor,
       ),
       child: Stack(
         children: <Widget>[
@@ -83,6 +92,7 @@ class _LampBottomNavigationBarState extends State<LampBottomNavigationBar>
                   foregroundPainter: _SelectedTilePainter(
                       newPosition: widget.currentIndex,
                       oldPosition: oldIndex,
+                      color: widget.dashColor,
                       progress: Tween<double>(begin: 0.0, end: 1.0)
                           .animate(CurvedAnimation(
                               parent: _controller,
@@ -116,6 +126,7 @@ class LampNavigationBarTile extends StatelessWidget {
   final double iconSize;
   final Animation animation;
   final VoidCallback onTap;
+  final Color lightColor;
 
   LampNavigationBarTile({
     Key key,
@@ -125,6 +136,7 @@ class LampNavigationBarTile extends StatelessWidget {
     this.onTap,
     this.active = false,
     this.wasActive = false,
+    this.lightColor = Colors.white,
   }) : super(key: key);
 
   @override
@@ -141,16 +153,29 @@ class LampNavigationBarTile extends StatelessWidget {
             opacity: ((active)
                 ? Tween<double>(begin: 0, end: 1).animate(
                     CurvedAnimation(
-                        parent: animation,
-                        curve: Interval(0.6, 1, curve: Curves.easeInOut)),
+                      parent: animation,
+                      curve: Interval(
+                        0.6,
+                        1,
+                        curve: Curves.easeInOut,
+                      ),
+                    ),
                   )
                 : Tween<double>(begin: 1, end: 0).animate(
                     CurvedAnimation(
-                        parent: animation,
-                        curve: Interval(0, 0.4, curve: Curves.easeInOut)),
+                      parent: animation,
+                      curve: Interval(
+                        0,
+                        0.4,
+                        curve: Curves.easeInOut,
+                      ),
+                    ),
                   )),
             child: CustomPaint(
-              foregroundPainter: _LightLampPainter(active: active || wasActive),
+              foregroundPainter: _LightLampPainter(
+                active: active || wasActive,
+                color: lightColor,
+              ),
             ),
           )
         ],
